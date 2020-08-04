@@ -1,0 +1,21 @@
+int main(){
+    float ta = 0.0, tb = 1.0;
+    float n = 0.0;
+    input(n);
+    if(n == 0.0) {
+        print(n);
+    }
+    else if(n == 1.0) {
+            print(n);
+    }
+    else {
+        print(ta);
+        for(float i = 0.0; i < n - 1.0; i = i + 1.0) {
+            float tx = tb;
+            print(tb);
+            tb = ta + tb;
+            ta = tx;
+        }
+        print(tb);
+    }
+}chao

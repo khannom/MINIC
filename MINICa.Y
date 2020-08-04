@@ -109,12 +109,11 @@ void interprete();
 							prop { TABCOD[$9].a3 = cx + 1;};
 
 /*  prop : WHILE '('               EXPRESION ')' prop;  */
-	prop : WHILE '(' {$$ = cx + 1;}  expr    ')' 	{genCodigo(SALTARF,$4,0,-1); /* Destino no resuelto, se llena en la siguiente accion semantica */
-	   						                         $$ = cx; /* Falta llenar cuarto componente de este salto */} 
+	prop : WHILE '(' {$$ = cx + 1;}  expr    ')' 	{genCodigo(SALTARF,$4,0,-1); 
+	   						                         $$ = cx;} 
 				                                 prop	
-				                                 	{genCodigo(SALTAR,0,0,$3); /* Ir al comienzo de la expresión */
-							                         TABCOD[$6].a3 = cx + 1; /* Llenando destino de saltar falso */
-				                                    };
+				                                 	{genCodigo(SALTAR,0,0,$3);
+							                         TABCOD[$6].a3 = cx + 1; };
 /* 	prop : FOR '(' Tipo listaVar ';' expr ';' expr ')' prop ; */
 	prop : FOR '(' Tipo listaVar ';'
 				{$$ = cx + 1;} expr { genCodigo(SALTARV,$7,0,-1); $$ = cx;} {genCodigo(SALTARF,$7,0,-1); $$ = cx;} ';'
@@ -135,6 +134,8 @@ void interprete();
 	prop : IMPRICHAR '(' expr ')' {genCodigo(IMPRICHAR,$3,0,0);};
 	prop : LEENUM '(' ID ')' { int idx = localizaSimbolo(lexema); genCodigo(LEENUM, idx, 0, 0); } ;
 	prop : expr ;
+
+	
 	expr : expr OR expr {int n = genvartemp();	genCodigo(OR,n,$1,$3);  $$=n;};
 	expr : expr AND expr {int n = genvartemp();	genCodigo(AND,n,$1,$3);  $$=n;};
 	expr : NOT expr {int n = genvartemp();	genCodigo(NOT,n,$2,0);  $$=n;};
